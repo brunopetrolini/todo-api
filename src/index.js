@@ -39,7 +39,7 @@ app.post('/users', (request, response) => {
 
   users.push(newUser);
 
-  return response.status(201).send();
+  return response.status(201).json(newUser);
 });
 
 app.get('/todos', checksExistsUserAccount, (request, response) => {
@@ -56,13 +56,13 @@ app.post('/todos', checksExistsUserAccount, (request, response) => {
     id: uuidv4(),
     title,
     done: false,
-    deadline: new Date(deadline + ' 00:00'),
+    deadline: new Date(deadline),
     created_at: new Date()
   };
 
   user.todos.push(newTodo);
 
-  return response.status(201).send();
+  return response.status(201).json(newTodo);
 });
 
 app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
@@ -76,9 +76,9 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
     return response.status(404).json({ error: 'Todo not exists.' });
 
   todo.title = title;
-  todo.deadline = new Date(deadline + ' 00:00');
+  todo.deadline = new Date(deadline);
 
-  return response.send();
+  return response.json(todo);
 });
 
 app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
@@ -92,7 +92,7 @@ app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
 
   todo.done = !todo.done;
 
-  return response.send();
+  return response.json(todo);
 });
 
 app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
